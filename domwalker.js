@@ -6,10 +6,16 @@
  2. browse with cursor over elemnts and see DOM hierarchy
 
  */
+var curra;
+var mm2, fiel;
+var clearEl = function(el) {
+    el.style.border = '0px';
+    //el.style.backgroundColor = '#fff';
+}
 
 function bb() {
 
-    /*
+    
      let els = document.querySelectorAll('*');
      //let els = g('*', document);
      //let e2 = document.querySelectorAll('*');
@@ -21,9 +27,10 @@ function bb() {
      //e.style.padding = '3px';
      console.log(e.style.border);
      });
-     */
-    var fiel = document.createElement('div');
-    document.body.appendChild(fiel);
+     
+    fiel = document.createElement('div');
+    var bod = document.querySelector('body')
+    bod.appendChild(fiel);
     fiel.style = 'width: 200px; min-height: 100px; display: inline-block; position:fixed; left: 100px; top: 100px; border: 2px solid blue;';
     fiel.style['background-color'] = "#fff";
     fiel.style['z-index'] = '10000';
@@ -33,14 +40,11 @@ function bb() {
     var currEls = [];
 
     var setEl = function(el, border, color) {
-        //el.style.border = border;
+        el.style.border = border;
         //el.style.backgroundColor = color;
         //console.log('-----------', color, el.style.backgroundColor);
     };
-    var clearEl = function(el) {
-        //el.style.border = '0px';
-        //el.style.backgroundColor = '#fff';
-    }
+    
 
     var collect = function(el) {
         var els = [el];
@@ -51,7 +55,7 @@ function bb() {
         }
         return els.reverse();
     }
-    var olda = []; var curra = [];
+    var olda = []; curra = [];
     var oldt, currt;
     var colors = ['red', 'green', 'blue',
         'red', 'green', 'blue',
@@ -66,13 +70,14 @@ function bb() {
         'red', 'green', 'blue'];
 
 
-    var mm2 = function(e) {
+    mm2 = function(e) {
         if (e.target === currEl) {
 
         }
 
         fiel.style.left = e.clientX + 30 + 'px';
         fiel.style.top = e.clientY + 'px';
+        fiel.style.border = '1px solid black'
 
         fiel.style.left = e.clientX - 360 + 'px';
         fiel.style.top = e.clientY - 300 + 'px';
@@ -96,7 +101,8 @@ function bb() {
             }
             s+='<div>' + window.innerWidth + 'x' + window.innerHeight + '</div><div></div>';
             for (i=0; i<curra.length; i++) {
-                let border = (1+ (i%4) * 2) + 'px solid ' + colors[i];
+                //let border = (1+ (i%4) * 2) + 'px solid ' + colors[i];
+                let border =  '1px solid ' + colors[i];
                 //console.log('border', border, colors[i]);
                 setEl(curra[i], border, colors[i]);
                 //console.log('style ', curra[i].style.backgroundColor);
@@ -129,9 +135,16 @@ function bb() {
 
     };
     var b = document.querySelector('body');
-    b.addEventListener('mousemove', mm2);
+    mouseMoveBB = b.addEventListener('mousemove', mm2);
 };
 
-bb();
+var mouseMoveBB;
 
+bb();
+var bb_stop = () => {
+    curra.map(e => clearEl(e))
+    var b = document.querySelector('body')
+    b.removeEventListener('mousemove', mm2)
+    b.removeChild(fiel)
+}
 //   window.addEventListener('load', bb, false);
